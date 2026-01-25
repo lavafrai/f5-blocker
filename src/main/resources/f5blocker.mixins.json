@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ru.lavafrai.svogame.f5blocker.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.svocraft.refmap.json",
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "MinecraftViewChangeMixin",
+    "OptionsViewChangeMixin"
+  ]
+}

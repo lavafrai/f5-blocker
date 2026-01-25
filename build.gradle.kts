@@ -9,6 +9,7 @@ plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.serialization") version "1.9.22"
     id("org.parchmentmc.librarian.forgegradle") version "1.+"
+    id("org.spongepowered.mixin") version "0.7.+"
 }
 
 repositories {
@@ -23,11 +24,6 @@ repositories {
         content {
             includeGroup("curse.maven")
         }
-    }
-
-    maven {
-        name = "svocraftRepository"
-        url = uri("https://reposilite.artembay.ru/releases")
     }
 }
 
@@ -91,12 +87,19 @@ minecraft {
     }
 }
 
+mixin {
+    add(sourceSets.main.get(), "f5blocker.refmap.json")
+    config("f5blocker.mixins.json")
+}
+
 dependencies {
     "minecraft"("net.minecraftforge:forge:${project.property("minecraft_version")}-${project.property("forge_version")}")
     implementation("thedarkcolour:kotlinforforge:4.11.0")
 
-    implementation("ru.lavafrai.svogame:svocraft:1.0-SNAPSHOT-55b1736")
-    implementation("ru.lavafrai.svogame.runtime:svoruntime:1.0.0-55b1736")
+    // optional dependencies, SBW and friends
+    implementation(fg.deobf("curse.maven:superb-warfare-1218165:7292685"))
+    implementation(fg.deobf("curse.maven:geckolib-388172:7025129"))
+    implementation(fg.deobf("curse.maven:curios-309927:5680164"))
 }
 
 tasks.withType<ProcessResources> {
@@ -131,34 +134,5 @@ tasks.withType<Jar> {
                 "Implementation-Vendor" to project.property("mod_authors"),
                 "Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date())
         ))
-    }
-}
-
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-
-            groupId = project.group.toString()
-            artifactId = base.archivesName.get()
-            version = project.version.toString()
-        }
-    }
-
-    repositories {
-        maven {
-            name = "reposilite"
-            url = uri("https://reposilite.artembay.ru/releases")
-
-            credentials {
-                username = gradle.extra["reposilite.user"]?.toString() ?: error("reposilite.user is not defined")
-                password = gradle.extra["reposilite.token"]?.toString() ?: error("reposilite.token is not defined")
-            }
-
-            authentication {
-                create<BasicAuthentication>("basic")
-            }
-        }
     }
 }

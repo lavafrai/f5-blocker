@@ -1,17 +1,3 @@
-import java.util.Properties
-
-val localProperties = Properties()
-val localPropertiesFile = file("local.properties")
-
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.inputStream().use {
-        localProperties.load(it)
-    }
-    localProperties.forEach { key, value ->
-        gradle.extra[key.toString()] = value
-    }
-}
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -30,5 +16,5 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
 }
 
-rootProject.name = "template"
+rootProject.name = "f5blocker"
 
