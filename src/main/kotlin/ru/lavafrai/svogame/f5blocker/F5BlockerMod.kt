@@ -94,6 +94,18 @@ class F5BlockerMod {
 
     @SubscribeEvent
     fun onPlayerTick(event: TickEvent.PlayerTickEvent) {
+        if (event.side.isClient && event.phase == TickEvent.Phase.END) {
+            enabledCompatabilityLayers.forEach {
+                it.clientTick(event.player)
+            }
+        }
+        if (event.side.isServer && event.phase == TickEvent.Phase.END) {
+            val player = event.player as? ServerPlayer
+            if (player != null) enabledCompatabilityLayers.forEach {
+                it.serverTick(player)
+            }
+        }
+
         if (event.side.isServer && event.phase == TickEvent.Phase.END) {
             val player = event.player as? ServerPlayer ?: return
             updatePlayerState(player, server.gameRules)

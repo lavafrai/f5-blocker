@@ -100,6 +100,9 @@ dependencies {
     implementation(fg.deobf("curse.maven:superb-warfare-1218165:7292685"))
     implementation(fg.deobf("curse.maven:geckolib-388172:7025129"))
     implementation(fg.deobf("curse.maven:curios-309927:5680164"))
+
+    // drones mod
+    implementation(fg.deobf("curse.maven:sbw-warborn-drones-1383935:7373873"))
 }
 
 tasks.withType<ProcessResources> {
