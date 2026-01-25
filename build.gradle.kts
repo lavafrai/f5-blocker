@@ -88,7 +88,7 @@ minecraft {
 }
 
 mixin {
-    add(sourceSets.main.get(), "f5blocker.refmap.json")
+    add(sourceSets.main.get(), "mixins.f5blocker.refmap.json")
     config("f5blocker.mixins.json")
 }
 

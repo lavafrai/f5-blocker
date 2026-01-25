@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "ru.lavafrai.svogame.f5blocker.mixins",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "mixins.svocraft.refmap.json",
+  "refmap": "mixins.f5blocker.refmap.json",
   "injectors": {
     "defaultRequire": 1
   },
