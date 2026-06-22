@@ -23,9 +23,12 @@ class SuperbWarfareCompatability: CompatabilityLayer {
     override fun serverTick(player: ServerPlayer) {}
 
     override fun clientTick(player: Player) {
-        if (isControllingDrone(player)) {
-            if (Minecraft.getInstance().options.cameraType != CameraType.THIRD_PERSON_BACK) {
-                Minecraft.getInstance().options.cameraType = CameraType.THIRD_PERSON_BACK
+        val localPlayer = Minecraft.getInstance().player
+        if (player === localPlayer) {
+            if (isControllingDrone(player)) {
+                if (Minecraft.getInstance().options.cameraType != CameraType.THIRD_PERSON_BACK) {
+                    Minecraft.getInstance().options.cameraType = CameraType.THIRD_PERSON_BACK
+                }
             }
         }
     }
@@ -39,8 +42,7 @@ class SuperbWarfareCompatability: CompatabilityLayer {
             "ignoreF5LimitationForSBWDriver",
             GameRules.Category.PLAYER,
             GameRules.BooleanValue.create(false) { server, value ->
-                val rules = server.gameRules
-                F5BlockerMod.getInstance().updatePlayersState(rules)
+                F5BlockerMod.getInstance().updatePlayersState(server)
             }
         )
     }

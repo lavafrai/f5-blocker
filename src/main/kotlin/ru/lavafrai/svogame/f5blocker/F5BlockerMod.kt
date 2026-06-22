@@ -13,6 +13,7 @@ import net.minecraftforge.event.server.ServerStartingEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
+import net.minecraftforge.fml.ModList
 import ru.lavafrai.svogame.f5blocker.compatability.CompatabilityLayer
 import ru.lavafrai.svogame.f5blocker.compatability.SuperbWarfareCompatability
 import ru.lavafrai.svogame.f5blocker.config.F5BlockerConfig
@@ -25,10 +26,13 @@ import java.util.*
 
 @Mod(F5BlockerMod.MODID)
 class F5BlockerMod {
-    lateinit var server: MinecraftServer
-    private val compatabilityLayers: List<CompatabilityLayer> = listOf(
-        SuperbWarfareCompatability()
-    )
+    private val compatabilityLayers: List<CompatabilityLayer> by lazy {
+        val list = mutableListOf<CompatabilityLayer>()
+        if (ModList.get().isLoaded("superbwarfare")) {
+            list.add(SuperbWarfareCompatability())
+        }
+        list
+    }
     val enabledCompatabilityLayers: MutableList<CompatabilityLayer> = mutableListOf()
     val userStatesCache: MutableMap<UUID, Boolean> = mutableMapOf()
 
@@ -73,8 +77,6 @@ class F5BlockerMod {
     @SubscribeEvent
     fun onServerStarting(event: ServerStartingEvent) {
         val server = event.getServer()
-        this.server = server
-
         F5GameRules.applyFromConfig(server)
     }
 
@@ -82,7 +84,7 @@ class F5BlockerMod {
     fun onPlayerLogin(event: PlayerEvent.PlayerLoggedInEvent) {
         val player = event.entity
         if (player is ServerPlayer) {
-            updatePlayerState(player, server.gameRules)
+            updatePlayerState(player, player.server.gameRules)
         }
     }
 
@@ -108,7 +110,7 @@ class F5BlockerMod {
 
         if (event.side.isServer && event.phase == TickEvent.Phase.END) {
             val player = event.player as? ServerPlayer ?: return
-            updatePlayerState(player, server.gameRules)
+            updatePlayerState(player, player.server.gameRules)
         }
     }
 
@@ -138,7 +140,8 @@ class F5BlockerMod {
         )
     }
 
-    fun updatePlayersState(gameRules: GameRules) {
+    fun updatePlayersState(server: MinecraftServer) {
+        val gameRules = server.gameRules
         for (player in server.playerList.players) {
             updatePlayerState(player, gameRules)
         }

@@ -3,7 +3,7 @@ package ru.lavafrai.svogame.f5blocker.config
 import ru.lavafrai.svogame.f5blocker.F5BlockerMod
 
 object F5ClientState {
-    private var f5Blocked: Boolean = true
+    private var f5Blocked: Boolean = false
 
     fun isF5Blocked(): Boolean = f5Blocked
     fun isF5Allowed(): Boolean = !f5Blocked

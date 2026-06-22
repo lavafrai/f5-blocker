@@ -17,8 +17,7 @@ object F5GameRules {
             GameRules.BooleanValue.create(true) { server, value ->
                 F5BlockerConfig.disableF5View.set(value.get())
 
-                val rules = server.gameRules
-                F5BlockerMod.getInstance().updatePlayersState(rules)
+                F5BlockerMod.getInstance().updatePlayersState(server)
             }
         )
 
@@ -28,8 +27,7 @@ object F5GameRules {
             GameRules.BooleanValue.create(false) { server, value ->
                 F5BlockerConfig.ignoreF5LimitationForOps.set(value.get())
 
-                val rules = server.gameRules
-                F5BlockerMod.getInstance().updatePlayersState(rules)
+                F5BlockerMod.getInstance().updatePlayersState(server)
             }
         )
     }
