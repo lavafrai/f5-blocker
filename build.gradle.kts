@@ -96,6 +96,8 @@ dependencies {
     "minecraft"("net.minecraftforge:forge:${project.property("minecraft_version")}-${project.property("forge_version")}")
     implementation("thedarkcolour:kotlinforforge:4.11.0")
 
+    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+
     // optional dependencies, SBW and friends
     implementation(fg.deobf("curse.maven:superb-warfare-1218165:7292685"))
     implementation(fg.deobf("curse.maven:geckolib-388172:7025129"))
